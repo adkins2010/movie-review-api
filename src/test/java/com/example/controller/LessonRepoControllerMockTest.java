@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.any;
@@ -31,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(LessonRepoController.class)
-public class LessonRepoControllerTest
+public class LessonRepoControllerMockTest
 {
     @Autowired
     MockMvc mvc;
@@ -62,7 +64,7 @@ public class LessonRepoControllerTest
                 .andExpect(jsonPath("$[0].title", equalTo("java spring boot") ));
     }
 
-    @Test public void shouldsendPOSTtoLessons() throws Exception {
+    @Test public void shouldsendMockPOSTtoLessons() throws Exception {
         Lesson lesson = new Lesson();
         lesson.setId(new Random().nextLong());
         lesson.setTitle("java lesson 2");
