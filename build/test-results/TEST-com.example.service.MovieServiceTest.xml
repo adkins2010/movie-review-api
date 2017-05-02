@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.service.MovieServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-05-02T16:57:27" hostname="COMPOZED-CL-19" time="0.013">
+  <properties/>
+  <testcase name="callsMockRestTemplateWithTitleAndReturnsAList" classname="com.example.service.MovieServiceTest" time="0.013"/>
+  <system-out><![CDATA[movieReviewResults:6
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
