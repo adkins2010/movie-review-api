@@ -1,36 +1,87 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.2.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 apply plugin: 'java'
-apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: "jacoco"
 
 jar {
-	baseName = 'demo'
-	version = '0.0.1-SNAPSHOT'
+    baseName = 'resttemplate-reviews'
+    version = '0.0.1-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
+sourceSets {
+    integrationTest {
+        java.srcDir file('src/integrationTest/java')
+        resources.srcDir file('src/integrationTest/resources')
+    }
+//    main {
+//        java.srcDir file('main/java')
+//        resources.srcDir file('main/resources')
+//    }
+//    test {
+//        java.srcDir file('test/java')
+//        java.srcDir file('test/resources')
+//    }
+}
+
+//war {
+//    from('src/main/java') {
+//        include '**/*.class'
+//        into 'WEB-INF/classes'
+//    }
+//}
+
+//jacocoTestCoverageVerification {
+//    violationRules {
+//        rule {
+//            limit {
+//                minimum = 0.9
+//            }
+//        }
+//    }
+//}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.hibernate:hibernate-validator')
-	runtime('mysql:mysql-connector-java')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('mysql:mysql-connector-java')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('com.google.code.gson:gson:2.8.0')
+
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile configurations.testCompile
+    integrationTestCompile sourceSets.test.output
+    integrationTestRuntime configurations.testRuntime
+}
+
+//test.finalizedBy(jacocoTestReport)
+//jacocoTestReport.finalizedBy(jacocoTestCoverageVerification)
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.4.1'
 }
