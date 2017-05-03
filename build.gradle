@@ -16,7 +16,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: "jacoco"
 
 jar {
-    baseName = 'rest-template-reviews'
+    baseName = 'resttemplate-reviews'
     version = '0.0.1-SNAPSHOT'
 }
 
@@ -27,21 +27,36 @@ repositories {
 }
 
 sourceSets {
-    assessment {
-        java.srcDir file('assessment/java')
-        resources.srcDir file('assessment/resources')
+    integrationTest {
+        java.srcDir file('integrationTest/java')
+        resources.srcDir file('integrationTest/resources')
     }
+//    main {
+//        java.srcDir file('main/java')
+//        resources.srcDir file('main/resources')
+//    }
+//    test {
+//        java.srcDir file('test/java')
+//        java.srcDir file('test/resources')
+//    }
 }
 
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.9
-            }
-        }
-    }
-}
+//war {
+//    from('src/main/java') {
+//        include '**/*.class'
+//        into 'WEB-INF/classes'
+//    }
+//}
+
+//jacocoTestCoverageVerification {
+//    violationRules {
+//        rule {
+//            limit {
+//                minimum = 0.9
+//            }
+//        }
+//    }
+//}
 
 test {
     testLogging {
@@ -56,19 +71,16 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile('com.google.code.gson:gson:2.8.0')
 
-    assessmentCompile sourceSets.main.output
-    assessmentCompile configurations.testCompile
-    assessmentCompile sourceSets.test.output
-    assessmentRuntime configurations.testRuntime
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile configurations.testCompile
+    integrationTestCompile sourceSets.test.output
+    integrationTestRuntime configurations.testRuntime
 }
 
-task assess(type: Test) {
-    testClassesDir = sourceSets.assessment.output.classesDir
-    classpath = sourceSets.assessment.runtimeClasspath
-}
-
-test.finalizedBy(jacocoTestReport)
-jacocoTestReport.finalizedBy(jacocoTestCoverageVerification)
+//test.finalizedBy(jacocoTestReport)
+//jacocoTestReport.finalizedBy(jacocoTestCoverageVerification)
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.4.1'
