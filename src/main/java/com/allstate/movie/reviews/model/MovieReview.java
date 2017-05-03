@@ -17,7 +17,7 @@ import java.io.Serializable;
         "starRating"
 })
 @Entity
-public class MovieReview implements Serializable {
+public class MovieReview {
 
     @JsonProperty("id")
     @Id

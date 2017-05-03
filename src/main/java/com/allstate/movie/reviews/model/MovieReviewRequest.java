@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by localadmin on 5/2/17.
  */
-public class MovieReviewRequest implements Serializable {
+public class MovieReviewRequest {
 
     private String title;
     private int year;

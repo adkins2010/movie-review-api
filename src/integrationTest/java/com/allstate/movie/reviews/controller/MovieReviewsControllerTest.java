@@ -1,5 +1,6 @@
 package com.allstate.movie.reviews.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import com.allstate.movie.reviews.model.MovieReviewRequest;
 import com.allstate.movie.reviews.model.MovieReviewResult;
 import com.allstate.movie.reviews.repository.MovieReviewRepository;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,19 +80,21 @@ public class MovieReviewsControllerTest {
                 String.format("  \"starRating\": %f%n", starRating) +
                 "}";
 
-        MockHttpServletRequestBuilder request = post("/reviews")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonString);
-
         /**
          * NOTE: I am not sure why it won't let me continue testing with mvc.perform.
          */
 
         ResponseEntity<MovieReviewResult> response = new MovieReviewsController(service, repository).createMovieReview(new MovieReviewRequest(title, year, reviewer, comment, starRating));
-
         assertNotNull(response, "Response is null.");
-        this.mvc.perform(request)
-                .andExpect(status().isCreated())
+
+
+        MockHttpServletRequestBuilder request = post("/reviews")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonString);
+
+
+        ResultActions action = this.mvc.perform(request).andDo(print());
+                action.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.movie.title", equalTo("Gremlins")))
                 .andExpect(jsonPath("$.review.reviewer", equalTo("Hercules Mulligan")));
 

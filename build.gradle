@@ -28,8 +28,8 @@ repositories {
 
 sourceSets {
     integrationTest {
-        java.srcDir file('integrationTest/java')
-        resources.srcDir file('integrationTest/resources')
+        java.srcDir file('src/integrationTest/java')
+        resources.srcDir file('src/integrationTest/resources')
     }
 //    main {
 //        java.srcDir file('main/java')
